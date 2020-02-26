@@ -2,12 +2,13 @@
 #include <stdlib.h>
 #include <iostream>
 #include <math.h>
+#include <time.h>
 #include "SDL/include/SDL.h"
 #pragma comment( lib, "SDL/libx86/SDL2.lib" )
 #pragma comment( lib, "SDL/libx86/SDL2main.lib" )
 
-#define WINDOW_WIDTH	1280
-#define WINDOW_HEIGHT	720
+#define WINDOW_WIDTH	1920
+#define WINDOW_HEIGHT	1080
 
 int main(int argc, char* args[])
 {
@@ -19,7 +20,7 @@ int main(int argc, char* args[])
 		return -1;
 	}
 
-	Window = SDL_CreateWindow("Hello SDL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
+	Window = SDL_CreateWindow("SDL CUADRADO", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
 	if (Window == NULL)
 	{
 		SDL_Log("Unable to create window: %s", SDL_GetError());
@@ -33,31 +34,44 @@ int main(int argc, char* args[])
 		return -1;
 	}
 
-	SDL_SetRenderDrawColor(Renderer, 0, 0, 255, 0);
-
-	SDL_RenderClear(Renderer);
-
 	int n = 0;
 	const int cx = WINDOW_WIDTH >> 1,
 		cy = WINDOW_HEIGHT >> 1;
-	SDL_Rect rc = { 0, 0, 30, 70 };
-	float alpha;
-	while (n < 360)
-	{
-		rc.x += 70;
-		rc.y += 40;
+	SDL_Rect rc = { 960, 540, 80, 80 };
 
-		SDL_SetRenderDrawColor(Renderer, 255, 0, 0, 0);
+	SDL_Event event;
+	SDL_PollEvent(&event);
+
+	while (event.key.keysym.sym != SDLK_x)
+	{
+
+		SDL_SetRenderDrawColor(Renderer, 0, 0, 225, 0);
+		SDL_RenderClear(Renderer);
+
+		if (event.key.keysym.sym == SDLK_w) {
+			rc.y += 5;
+		}
+		if (event.key.keysym.sym == SDLK_a) {
+			rc.x -= 5;
+		}
+		if (event.key.keysym.sym == SDLK_s) {
+			rc.y -= 5;
+		}
+		if (event.key.keysym.sym == SDLK_d) {
+			rc.x += 5;
+		}
+
+		SDL_SetRenderDrawColor(Renderer, 0, 0, 225, 0);
+		SDL_RenderClear(Renderer);
+		SDL_SetRenderDrawColor(Renderer, 225, 0, 0, 0);
 		SDL_RenderFillRect(Renderer, &rc);
 
-		SDL_Delay(100);
+		SDL_Delay(500);
 
 		SDL_RenderPresent(Renderer);
 
-		n += 18;
+		n += 15;
 	}
-
-	SDL_Delay(100);
 
 	SDL_Quit();
 
